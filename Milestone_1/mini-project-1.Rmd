@@ -86,7 +86,7 @@ And that is exactly the first thing that you will do!
 Choice 1: cancer_sample \
 Choice 2: apt_buildings \
 Choice 3: parking_meters \
-Choice 4: flow_sample
+Choice 4: flow_sample \
 
 <!----------------------------------------------------------------------------->
 
@@ -97,26 +97,49 @@ Choice 4: flow_sample
 <!-------------------------- Start your work below ---------------------------->
 
 ```{r}
-### EXPLORE HERE ###
-datateachr::cancer_sample
-#datateachr::apt_buildings
-#datateachr::parking_meters
-datateachr::flow_sample
+# cancer_sample dataset
+glimpse(datateachr::cancer_sample)
 ```
+
+The cancer_sample dataset contains 569 rows, 32 variables, and contains dbl and chr as datatypes. 
+
+```{r}
+# apt_buildings dataset 
+glimpse(datateachr::apt_buildings)
+```
+
+The apt_building dataset contains 3,455 rows and 37 varaibles. It also contains both dbl and chr datatypes. 
+
+```{r}
+# parking_meters dataset 
+glimpse(datateachr::parking_meters)
+```
+
+The parking_meter dataset has 10032 rows, 22 variables and has both chr and dbl datatypes. 
+
+```{r}
+# flow_sample dataset
+glimpse(datateachr::flow_sample)
+```
+
+The flow_sample has 218 rows, 7 variables, and contains chr and dbl datatypes. 
 
 <!----------------------------------------------------------------------------->
 
 1.3 Now that you've explored the 4 datasets that you were initially most interested in, let's narrow it down to 2. What lead you to choose these 2? Briefly explain your choices below, and feel free to include any code in your explanation.
 
 <!-------------------------- Start your work below ---------------------------->
-I decide to choose cancer_sample and flow_sample. I choose cancer sample because it is more obvious than other datasets that it explores how factors (radius mean, area mean, etc.) affect the diagnosis whether a tumor is malicious or benign. I can then analysis and fit the data using logistic regression because the response variable is binary. The flow_sample dataset is more like a time-series data, where I can investigate the flow in different time and how does the flow changes throughout the time. I can apply some time-series anlaysis techniques to deal with the dataset. Thus, these two datasets are more familiar to me and that is why I choose them. 
+
+I decide to choose cancer_sample and flow_sample. I choose cancer sample because it is more obvious than other datasets that it explores how factors (radius mean, area mean, etc.) affect the diagnosis whether a tumor is malicious or benign. I can then analysis and fit the data using logistic regression. The flow_sample dataset is more about time-series, where I can investigate the flow in different time and how does it changes throughout the time. I can apply some time-series anlaysis techniques to deal with the dataset. Thus, these two datasets are more interesting to me and that is why I choose them. 
 
 <!----------------------------------------------------------------------------->
 
 1.4 Time for the final decision! Going back to the beginning, it's important to have an *end goal* in mind. For example, if I had chosen the `titanic` dataset for my project, I might've wanted to explore the relationship between survival and other variables. Try to think of 1 research question that you would want to answer with each dataset. Note them down below, and make your final choice based on what seems more interesting to you!
 
 <!-------------------------- Start your work below ---------------------------->
-I finally decide to work on cancer_sample dataset. In this dataset, I want to explore the relationship between diagnosis of tumor (malicious or benign) with other numeric explanatory variables, such as radius or area mean. I am going to first start with exploratory analysis, feature selection and then fit the data with logistic regression model. Hopefully I can then understand which explanatory variables affect the diagnosis of cancer !
+
+If I were to choose flow_sample dataset, my research question would be "is there a trend or seasonality in the flow_sample dataset?" But I finally decide to work on cancer_sample dataset instead. In this dataset, my research question is to explore the relationship between diagnosis of tumor (malicious or benign) with other numeric explanatory variables, such as radius or area mean. I choose this dataset becuase I can understand which factors affect the diagnosis of cancer, which is an important topic in health science. 
+
 <!----------------------------------------------------------------------------->
 
 # Important note
@@ -145,8 +168,8 @@ If we rewind and go back to the learning objectives, you'll see that by the end 
 <!-------------------------- Start your work below ---------------------------->
 
 ```{r}
-# read data, show summary
-cancer_sample <- as.tibble(datateachr::cancer_sample)
+# read data, change diagnosis as factors
+cancer_sample <- as_tibble(datateachr::cancer_sample)
 cancer_sample$diagnosis <- as.factor(cancer_sample$diagnosis)
 ```
 
@@ -162,24 +185,26 @@ The first exploration is to examine the distribution of the response variable, d
 
 ```{r}
 # Investigate how many missing values there are per variable
-any(is.na(cancer_sample))
+cancer_sample %>% summarise(count = sum(is.na(cancer_sample)))
 ```
 The second exploration is to check how many missing values there are in the dataset. This check is important because if there are missing values, we need to omit those entries during the exploration. After checking, I find that there are zero (no) missing values in the dataset. This is also good news since we do not need to do na.omit(). 
 
 ```{r}
 # Plot the correlation matrix of the dataset
 corr_mat <- cor(cancer_sample[,3:ncol(cancer_sample)])
-corrplot(corr_mat)
+ggcorrplot(corr_mat, hc.order = TRUE)
 # Check the correlation between two variable, radius_mean and area_worst
-print(cor(cancer_sample$radius_mean, cancer_sample$area_worst))
+ggplot(cancer_sample, aes(x = radius_mean, y = area_worst)) + geom_point()
+cor(cancer_sample$radius_mean, cancer_sample$area_worst)
 ```
-The third exploration is to create a correlation matrix between explanatory variables. We want to do this in order to check the collinearity in the dataset. From the correlation matrix, we can see that there are many positive correlations between each pair of explanatory variables. Besides, there are fewer negative correlations between explanatory variables than postive correlations. For example, radius_mean and area_worst have very high positive correlations, with a corelation coefficient of 0.9410825. 
+The third exploration is to create a correlation matrix between explanatory variables. We do this to explore the relationship between variables in the dataset. From the correlation matrix, we can see that there are many positive correlations between each pair of explanatory variables. Besides, there are fewer negative correlations between explanatory variables than postive correlations. To be more specific, I create a scatter plot to examine the relationship between radius_mean and area_worst. Fron the plot, we can see that there is a positive relationship between radius_mean and area_worst, and their correlation coefficient is 0.9410825 (very high).
 
 ```{r}
 # Create two subsets, one where diagnosis is all B and the other where diagnosis is all M
 benign_subset <- filter(cancer_sample, diagnosis == "B")
 malicious_subset <- filter(cancer_sample, diagnosis == "M")
 ```
+
 The fourth exploration is to subset the dataset based on the diagnosis and then assign them into two new variables, benign_subset and malicious_subset. I used filter function to create two subset where one contains all benign cases, and the other all malicious cases. The reason of doing this is that I can then analysis the data for each subset, for example, to compute the mean or max of a variable for all malicious tumors.  
 
 <!----------------------------------------------------------------------------->
@@ -191,7 +216,7 @@ So far, you have chosen a dataset and gotten familiar with it through exploring 
 Question 1: How does each variable, such as radius_mean, differ in the case of malicious versus benign tumors ? \
 Question 2: Are there any outliers in the dataset that we can remove to make the distribution look better ? \
 Question 3: Which subset of explanatory variables are significant in affecting the diagnosis of tumors ? Which variables are insignificant and can be eliminated (i.e. feature selection) ? \
-Question 4: Are there any strong collinearity between the variables (i.e. one explanatory variable with the other) ? How should we deal with them in the data processing ?  
+Question 4: Are there any strong collinearity between the variables (i.e. one explanatory variable with the other) ? 
 
 # Task 4: Process and summarize your data (13 points)
 
@@ -242,8 +267,7 @@ For the graphing task, I plot the hist for radius_mean in the malicious subset, 
 
 ```{r}
 # For question 2: summarize
-cancer_sample$diagnosis <- as.factor(cancer_sample$diagnosis)
-summary(cancer_sample$diagnosis)
+cancer_sample %>% count(diagnosis)
 ```
 
 For the second summarizing task, I compute the number of observations for one categorical (also response) variable, which is diagnosis (a very simple one). We can see there are 357 benign cases and 212 malicous cases in diagnosis. Thus we know that the dataset is a little imbalanced (more benign cases) but this imbalance is not serious enough to affect our model fitting. 

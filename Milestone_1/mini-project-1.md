@@ -152,7 +152,7 @@ understand your data.
 Choice 1: cancer\_sample  
 Choice 2: apt\_buildings  
 Choice 3: parking\_meters  
-Choice 4: flow\_sample
+Choice 4: flow\_sample  
 
 <!----------------------------------------------------------------------------->
 
@@ -169,48 +169,139 @@ comments outside of the code chunk?
 
 <!-------------------------- Start your work below ---------------------------->
 
-    ### EXPLORE HERE ###
-    datateachr::cancer_sample
+    # cancer_sample dataset
+    glimpse(datateachr::cancer_sample)
 
-    ## # A tibble: 569 × 32
-    ##          ID diagn…¹ radiu…² textu…³ perim…⁴ area_…⁵ smoot…⁶ compa…⁷ conca…⁸
-    ##       <dbl> <chr>     <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-    ##  1   842302 M          18.0    10.4   123.    1001   0.118   0.278   0.300 
-    ##  2   842517 M          20.6    17.8   133.    1326   0.0847  0.0786  0.0869
-    ##  3 84300903 M          19.7    21.2   130     1203   0.110   0.160   0.197 
-    ##  4 84348301 M          11.4    20.4    77.6    386.  0.142   0.284   0.241 
-    ##  5 84358402 M          20.3    14.3   135.    1297   0.100   0.133   0.198 
-    ##  6   843786 M          12.4    15.7    82.6    477.  0.128   0.17    0.158 
-    ##  7   844359 M          18.2    20.0   120.    1040   0.0946  0.109   0.113 
-    ##  8 84458202 M          13.7    20.8    90.2    578.  0.119   0.164   0.0937
-    ##  9   844981 M          13      21.8    87.5    520.  0.127   0.193   0.186 
-    ## 10 84501001 M          12.5    24.0    84.0    476.  0.119   0.240   0.227 
-    ## # … with 559 more rows, 23 more variables: concave_points_mean <dbl>,
-    ## #   symmetry_mean <dbl>, fractal_dimension_mean <dbl>, radius_se <dbl>,
-    ## #   texture_se <dbl>, perimeter_se <dbl>, area_se <dbl>,
-    ## #   smoothness_se <dbl>, compactness_se <dbl>, concavity_se <dbl>,
-    ## #   concave_points_se <dbl>, symmetry_se <dbl>,
-    ## #   fractal_dimension_se <dbl>, radius_worst <dbl>, texture_worst <dbl>,
-    ## #   perimeter_worst <dbl>, area_worst <dbl>, smoothness_worst <dbl>, …
+    ## Rows: 569
+    ## Columns: 32
+    ## $ ID                      <dbl> 842302, 842517, 84300903, 84348301, 84358…
+    ## $ diagnosis               <chr> "M", "M", "M", "M", "M", "M", "M", "M", "…
+    ## $ radius_mean             <dbl> 17.990, 20.570, 19.690, 11.420, 20.290, 1…
+    ## $ texture_mean            <dbl> 10.38, 17.77, 21.25, 20.38, 14.34, 15.70,…
+    ## $ perimeter_mean          <dbl> 122.80, 132.90, 130.00, 77.58, 135.10, 82…
+    ## $ area_mean               <dbl> 1001.0, 1326.0, 1203.0, 386.1, 1297.0, 47…
+    ## $ smoothness_mean         <dbl> 0.11840, 0.08474, 0.10960, 0.14250, 0.100…
+    ## $ compactness_mean        <dbl> 0.27760, 0.07864, 0.15990, 0.28390, 0.132…
+    ## $ concavity_mean          <dbl> 0.30010, 0.08690, 0.19740, 0.24140, 0.198…
+    ## $ concave_points_mean     <dbl> 0.14710, 0.07017, 0.12790, 0.10520, 0.104…
+    ## $ symmetry_mean           <dbl> 0.2419, 0.1812, 0.2069, 0.2597, 0.1809, 0…
+    ## $ fractal_dimension_mean  <dbl> 0.07871, 0.05667, 0.05999, 0.09744, 0.058…
+    ## $ radius_se               <dbl> 1.0950, 0.5435, 0.7456, 0.4956, 0.7572, 0…
+    ## $ texture_se              <dbl> 0.9053, 0.7339, 0.7869, 1.1560, 0.7813, 0…
+    ## $ perimeter_se            <dbl> 8.589, 3.398, 4.585, 3.445, 5.438, 2.217,…
+    ## $ area_se                 <dbl> 153.40, 74.08, 94.03, 27.23, 94.44, 27.19…
+    ## $ smoothness_se           <dbl> 0.006399, 0.005225, 0.006150, 0.009110, 0…
+    ## $ compactness_se          <dbl> 0.049040, 0.013080, 0.040060, 0.074580, 0…
+    ## $ concavity_se            <dbl> 0.05373, 0.01860, 0.03832, 0.05661, 0.056…
+    ## $ concave_points_se       <dbl> 0.015870, 0.013400, 0.020580, 0.018670, 0…
+    ## $ symmetry_se             <dbl> 0.03003, 0.01389, 0.02250, 0.05963, 0.017…
+    ## $ fractal_dimension_se    <dbl> 0.006193, 0.003532, 0.004571, 0.009208, 0…
+    ## $ radius_worst            <dbl> 25.38, 24.99, 23.57, 14.91, 22.54, 15.47,…
+    ## $ texture_worst           <dbl> 17.33, 23.41, 25.53, 26.50, 16.67, 23.75,…
+    ## $ perimeter_worst         <dbl> 184.60, 158.80, 152.50, 98.87, 152.20, 10…
+    ## $ area_worst              <dbl> 2019.0, 1956.0, 1709.0, 567.7, 1575.0, 74…
+    ## $ smoothness_worst        <dbl> 0.1622, 0.1238, 0.1444, 0.2098, 0.1374, 0…
+    ## $ compactness_worst       <dbl> 0.6656, 0.1866, 0.4245, 0.8663, 0.2050, 0…
+    ## $ concavity_worst         <dbl> 0.71190, 0.24160, 0.45040, 0.68690, 0.400…
+    ## $ concave_points_worst    <dbl> 0.26540, 0.18600, 0.24300, 0.25750, 0.162…
+    ## $ symmetry_worst          <dbl> 0.4601, 0.2750, 0.3613, 0.6638, 0.2364, 0…
+    ## $ fractal_dimension_worst <dbl> 0.11890, 0.08902, 0.08758, 0.17300, 0.076…
 
-    #datateachr::apt_buildings
-    #datateachr::parking_meters
-    datateachr::flow_sample
+The cancer\_sample dataset contains 569 rows, 32 variables, and contains
+dbl and chr as datatypes.
 
-    ## # A tibble: 218 × 7
-    ##    station_id  year extreme_type month   day  flow sym  
-    ##    <chr>      <dbl> <chr>        <dbl> <dbl> <dbl> <chr>
-    ##  1 05BB001     1909 maximum          7     7   314 <NA> 
-    ##  2 05BB001     1910 maximum          6    12   230 <NA> 
-    ##  3 05BB001     1911 maximum          6    14   264 <NA> 
-    ##  4 05BB001     1912 maximum          8    25   174 <NA> 
-    ##  5 05BB001     1913 maximum          6    11   232 <NA> 
-    ##  6 05BB001     1914 maximum          6    18   214 <NA> 
-    ##  7 05BB001     1915 maximum          6    27   236 <NA> 
-    ##  8 05BB001     1916 maximum          6    20   309 <NA> 
-    ##  9 05BB001     1917 maximum          6    17   174 <NA> 
-    ## 10 05BB001     1918 maximum          6    15   345 <NA> 
-    ## # … with 208 more rows
+    # apt_buildings dataset 
+    glimpse(datateachr::apt_buildings)
+
+    ## Rows: 3,455
+    ## Columns: 37
+    ## $ id                               <dbl> 10359, 10360, 10361, 10362, 1036…
+    ## $ air_conditioning                 <chr> "NONE", "NONE", "NONE", "NONE", …
+    ## $ amenities                        <chr> "Outdoor rec facilities", "Outdo…
+    ## $ balconies                        <chr> "YES", "YES", "YES", "YES", "NO"…
+    ## $ barrier_free_accessibilty_entr   <chr> "YES", "NO", "NO", "YES", "NO", …
+    ## $ bike_parking                     <chr> "0 indoor parking spots and 10 o…
+    ## $ exterior_fire_escape             <chr> "NO", "NO", "NO", "YES", "NO", N…
+    ## $ fire_alarm                       <chr> "YES", "YES", "YES", "YES", "YES…
+    ## $ garbage_chutes                   <chr> "YES", "YES", "NO", "NO", "NO", …
+    ## $ heating_type                     <chr> "HOT WATER", "HOT WATER", "HOT W…
+    ## $ intercom                         <chr> "YES", "YES", "YES", "YES", "YES…
+    ## $ laundry_room                     <chr> "YES", "YES", "YES", "YES", "YES…
+    ## $ locker_or_storage_room           <chr> "NO", "YES", "YES", "YES", "NO",…
+    ## $ no_of_elevators                  <dbl> 3, 3, 0, 1, 0, 0, 0, 2, 4, 2, 0,…
+    ## $ parking_type                     <chr> "Underground Garage , Garage acc…
+    ## $ pets_allowed                     <chr> "YES", "YES", "YES", "YES", "YES…
+    ## $ prop_management_company_name     <chr> NA, "SCHICKEDANZ BROS. PROPERTIE…
+    ## $ property_type                    <chr> "PRIVATE", "PRIVATE", "PRIVATE",…
+    ## $ rsn                              <dbl> 4154812, 4154815, 4155295, 41553…
+    ## $ separate_gas_meters              <chr> "NO", "NO", "NO", "NO", "NO", "N…
+    ## $ separate_hydro_meters            <chr> "YES", "YES", "YES", "YES", "YES…
+    ## $ separate_water_meters            <chr> "NO", "NO", "NO", "NO", "NO", "N…
+    ## $ site_address                     <chr> "65  FOREST MANOR RD", "70  CLIP…
+    ## $ sprinkler_system                 <chr> "YES", "YES", "NO", "YES", "NO",…
+    ## $ visitor_parking                  <chr> "PAID", "FREE", "UNAVAILABLE", "…
+    ## $ ward                             <chr> "17", "17", "03", "03", "02", "0…
+    ## $ window_type                      <chr> "DOUBLE PANE", "DOUBLE PANE", "D…
+    ## $ year_built                       <dbl> 1967, 1970, 1927, 1959, 1943, 19…
+    ## $ year_registered                  <dbl> 2017, 2017, 2017, 2017, 2017, NA…
+    ## $ no_of_storeys                    <dbl> 17, 14, 4, 5, 4, 4, 4, 7, 32, 4,…
+    ## $ emergency_power                  <chr> "NO", "YES", "NO", "NO", "NO", "…
+    ## $ `non-smoking_building`           <chr> "YES", "NO", "YES", "YES", "YES"…
+    ## $ no_of_units                      <dbl> 218, 206, 34, 42, 25, 34, 14, 10…
+    ## $ no_of_accessible_parking_spaces  <dbl> 8, 10, 20, 42, 12, 0, 5, 1, 1, 6…
+    ## $ facilities_available             <chr> "Recycling bins", "Green Bin / O…
+    ## $ cooling_room                     <chr> "NO", "NO", "NO", "NO", "NO", "N…
+    ## $ no_barrier_free_accessible_units <dbl> 2, 0, 0, 42, 0, NA, 14, 0, 0, 1,…
+
+The apt\_building dataset contains 3,455 rows and 37 varaibles. It also
+contains both dbl and chr datatypes.
+
+    # parking_meters dataset 
+    glimpse(datateachr::parking_meters)
+
+    ## Rows: 10,032
+    ## Columns: 22
+    ## $ meter_head     <chr> "Twin", "Pay Station", "Twin", "Single", "Twin", "…
+    ## $ r_mf_9a_6p     <chr> "$2.00", "$1.00", "$1.00", "$1.00", "$2.00", "$2.0…
+    ## $ r_mf_6p_10     <chr> "$4.00", "$1.00", "$1.00", "$1.00", "$1.00", "$1.0…
+    ## $ r_sa_9a_6p     <chr> "$2.00", "$1.00", "$1.00", "$1.00", "$2.00", "$2.0…
+    ## $ r_sa_6p_10     <chr> "$4.00", "$1.00", "$1.00", "$1.00", "$1.00", "$1.0…
+    ## $ r_su_9a_6p     <chr> "$2.00", "$1.00", "$1.00", "$1.00", "$2.00", "$2.0…
+    ## $ r_su_6p_10     <chr> "$4.00", "$1.00", "$1.00", "$1.00", "$1.00", "$1.0…
+    ## $ rate_misc      <chr> NA, "$ .50", NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+    ## $ time_in_effect <chr> "METER IN EFFECT: 9:00 AM TO 10:00 PM", "METER IN …
+    ## $ t_mf_9a_6p     <chr> "2 Hr", "10 Hrs", "2 Hr", "2 Hr", "2 Hr", "3 Hr", …
+    ## $ t_mf_6p_10     <chr> "4 Hr", "10 Hrs", "4 Hr", "4 Hr", "4 Hr", "4 Hr", …
+    ## $ t_sa_9a_6p     <chr> "2 Hr", "10 Hrs", "2 Hr", "2 Hr", "2 Hr", "3 Hr", …
+    ## $ t_sa_6p_10     <chr> "4 Hr", "10 Hrs", "4 Hr", "4 Hr", "4 Hr", "4 Hr", …
+    ## $ t_su_9a_6p     <chr> "2 Hr", "10 Hrs", "2 Hr", "2 Hr", "2 Hr", "3 Hr", …
+    ## $ t_su_6p_10     <chr> "4 Hr", "10 Hrs", "4 Hr", "4 Hr", "4 Hr", "4 Hr", …
+    ## $ time_misc      <chr> NA, "No Time Limit", NA, NA, NA, NA, NA, NA, NA, N…
+    ## $ credit_card    <chr> "No", "Yes", "No", "No", "No", "No", "No", "No", "…
+    ## $ pay_phone      <chr> "66890", "59916", "57042", "57159", "51104", "6086…
+    ## $ longitude      <dbl> -123.1289, -123.0982, -123.1013, -123.1862, -123.1…
+    ## $ latitude       <dbl> 49.28690, 49.27215, 49.25468, 49.26341, 49.26354, …
+    ## $ geo_local_area <chr> "West End", "Strathcona", "Riley Park", "West Poin…
+    ## $ meter_id       <chr> "670805", "471405", "C80145", "D03704", "301023", …
+
+The parking\_meter dataset has 10032 rows, 22 variables and has both chr
+and dbl datatypes.
+
+    # flow_sample dataset
+    glimpse(datateachr::flow_sample)
+
+    ## Rows: 218
+    ## Columns: 7
+    ## $ station_id   <chr> "05BB001", "05BB001", "05BB001", "05BB001", "05BB001…
+    ## $ year         <dbl> 1909, 1910, 1911, 1912, 1913, 1914, 1915, 1916, 1917…
+    ## $ extreme_type <chr> "maximum", "maximum", "maximum", "maximum", "maximum…
+    ## $ month        <dbl> 7, 6, 6, 8, 6, 6, 6, 6, 6, 6, 6, 7, 6, 6, 6, 7, 5, 7…
+    ## $ day          <dbl> 7, 12, 14, 25, 11, 18, 27, 20, 17, 15, 22, 3, 9, 5, …
+    ## $ flow         <dbl> 314, 230, 264, 174, 232, 214, 236, 309, 174, 345, 18…
+    ## $ sym          <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+
+The flow\_sample has 218 rows, 7 variables, and contains chr and dbl
+datatypes.
 
 <!----------------------------------------------------------------------------->
 
@@ -225,12 +316,11 @@ I decide to choose cancer\_sample and flow\_sample. I choose cancer
 sample because it is more obvious than other datasets that it explores
 how factors (radius mean, area mean, etc.) affect the diagnosis whether
 a tumor is malicious or benign. I can then analysis and fit the data
-using logistic regression because the response variable is binary. The
-flow\_sample dataset is more like a time-series data, where I can
-investigate the flow in different time and how does the flow changes
-throughout the time. I can apply some time-series anlaysis techniques to
-deal with the dataset. Thus, these two datasets are more familiar to me
-and that is why I choose them.
+using logistic regression. The flow\_sample dataset is more about
+time-series, where I can investigate the flow in different time and how
+does it changes throughout the time. I can apply some time-series
+anlaysis techniques to deal with the dataset. Thus, these two datasets
+are more interesting to me and that is why I choose them.
 
 <!----------------------------------------------------------------------------->
 
@@ -244,13 +334,15 @@ interesting to you!
 
 <!-------------------------- Start your work below ---------------------------->
 
-I finally decide to work on cancer\_sample dataset. In this dataset, I
-want to explore the relationship between diagnosis of tumor (malicious
-or benign) with other numeric explanatory variables, such as radius or
-area mean. I am going to first start with exploratory analysis, feature
-selection and then fit the data with logistic regression model.
-Hopefully I can then understand which explanatory variables affect the
-diagnosis of cancer !
+If I were to choose flow\_sample dataset, my research question would be
+“is there a trend or seasonality in the flow\_sample dataset?” But I
+finally decide to work on cancer\_sample dataset instead. In this
+dataset, my research question is to explore the relationship between
+diagnosis of tumor (malicious or benign) with other numeric explanatory
+variables, such as radius or area mean. I choose this dataset becuase I
+can understand which factors affect the diagnosis of cancer, which is an
+important topic in health science.
+
 <!----------------------------------------------------------------------------->
 
 # Important note
@@ -313,20 +405,15 @@ comments for a reader to understand your reasoning and code.
 
 <!-------------------------- Start your work below ---------------------------->
 
-    # read data, show summary
-    cancer_sample <- as.tibble(datateachr::cancer_sample)
-
-    ## Warning: `as.tibble()` was deprecated in tibble 2.0.0.
-    ## Please use `as_tibble()` instead.
-    ## The signature and semantics have changed, see `?as_tibble`.
-
+    # read data, change diagnosis as factors
+    cancer_sample <- as_tibble(datateachr::cancer_sample)
     cancer_sample$diagnosis <- as.factor(cancer_sample$diagnosis)
 
     # Print the distributio of diagnosis (benign or malicious)
     ggplot(cancer_sample, aes(diagnosis, ..count..)) +
         geom_bar(fill = "lightblue", colour = 'black') 
 
-![](mini-project-1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](mini-project-1_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 The first exploration is to examine the distribution of the response
 variable, diagnosis. The reason I am doing this is to see whether the
@@ -339,9 +426,12 @@ malicious case). So I do not have to do additional transformation for
 the response variable.
 
     # Investigate how many missing values there are per variable
-    any(is.na(cancer_sample))
+    cancer_sample %>% summarise(count = sum(is.na(cancer_sample)))
 
-    ## [1] FALSE
+    ## # A tibble: 1 × 1
+    ##   count
+    ##   <int>
+    ## 1     0
 
 The second exploration is to check how many missing values there are in
 the dataset. This check is important because if there are missing
@@ -351,23 +441,29 @@ This is also good news since we do not need to do na.omit().
 
     # Plot the correlation matrix of the dataset
     corr_mat <- cor(cancer_sample[,3:ncol(cancer_sample)])
-    corrplot(corr_mat)
+    ggcorrplot(corr_mat, hc.order = TRUE)
 
-![](mini-project-1_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](mini-project-1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
     # Check the correlation between two variable, radius_mean and area_worst
-    print(cor(cancer_sample$radius_mean, cancer_sample$area_worst))
+    ggplot(cancer_sample, aes(x = radius_mean, y = area_worst)) + geom_point()
+
+![](mini-project-1_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
+
+    cor(cancer_sample$radius_mean, cancer_sample$area_worst)
 
     ## [1] 0.9410825
 
 The third exploration is to create a correlation matrix between
-explanatory variables. We want to do this in order to check the
-collinearity in the dataset. From the correlation matrix, we can see
-that there are many positive correlations between each pair of
-explanatory variables. Besides, there are fewer negative correlations
-between explanatory variables than postive correlations. For example,
-radius\_mean and area\_worst have very high positive correlations, with
-a corelation coefficient of 0.9410825.
+explanatory variables. We do this to explore the relationship between
+variables in the dataset. From the correlation matrix, we can see that
+there are many positive correlations between each pair of explanatory
+variables. Besides, there are fewer negative correlations between
+explanatory variables than postive correlations. To be more specific, I
+create a scatter plot to examine the relationship between radius\_mean
+and area\_worst. Fron the plot, we can see that there is a positive
+relationship between radius\_mean and area\_worst, and their correlation
+coefficient is 0.9410825 (very high).
 
     # Create two subsets, one where diagnosis is all B and the other where diagnosis is all M
     benign_subset <- filter(cancer_sample, diagnosis == "B")
@@ -401,8 +497,7 @@ Question 3: Which subset of explanatory variables are significant in
 affecting the diagnosis of tumors ? Which variables are insignificant
 and can be eliminated (i.e. feature selection) ?  
 Question 4: Are there any strong collinearity between the variables
-(i.e. one explanatory variable with the other) ? How should we deal with
-them in the data processing ?
+(i.e. one explanatory variable with the other) ?
 
 # Task 4: Process and summarize your data (13 points)
 
@@ -477,17 +572,17 @@ than benign tumors (also higher median, 25% and 75% quantiles).
     ggplot(malicious_subset, aes(x= radius_mean)) +
                 geom_histogram(bins=5)
 
-![](mini-project-1_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](mini-project-1_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
     ggplot(malicious_subset, aes(x= radius_mean)) +
                 geom_histogram(bins=10)
 
-![](mini-project-1_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
+![](mini-project-1_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
 
     ggplot(malicious_subset, aes(x= radius_mean)) +
                 geom_histogram(bins=20)
 
-![](mini-project-1_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->
+![](mini-project-1_files/figure-gfm/unnamed-chunk-12-3.png)<!-- -->
 
 For the graphing task, I plot the hist for radius\_mean in the malicious
 subset, and choose the bin to be 5, 10 and 20 respectively. When
@@ -499,11 +594,13 @@ helpful because it can make the graph display nicer and show the pattern
 in the data better.
 
     # For question 2: summarize
-    cancer_sample$diagnosis <- as.factor(cancer_sample$diagnosis)
-    summary(cancer_sample$diagnosis)
+    cancer_sample %>% count(diagnosis)
 
-    ##   B   M 
-    ## 357 212
+    ## # A tibble: 2 × 2
+    ##   diagnosis     n
+    ##   <fct>     <int>
+    ## 1 B           357
+    ## 2 M           212
 
 For the second summarizing task, I compute the number of observations
 for one categorical (also response) variable, which is diagnosis (a very
@@ -515,7 +612,7 @@ our model fitting.
     # For question 2: graphing
     ggplot(data=cancer_sample, aes(x=diagnosis, y=area_se)) + geom_boxplot() + geom_count()
 
-![](mini-project-1_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](mini-project-1_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 In order to find outliers in the dataset, I need to look at the
 distribution of each variable. I find the variable area\_se seems to
@@ -546,7 +643,7 @@ correlation.
     cancer_sample$radius_mean_level <- radius_mean_level
     ggplot(cancer_sample, aes(x=factor(radius_mean_level, level = c("low", "medium", "high", "very high")), ..count.., alpha=..count..)) + geom_bar(aes(fill=diagnosis)) + labs(x = "radius_mean_level")
 
-![](mini-project-1_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](mini-project-1_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 I now create a graph showing how radius\_mean\_level is positively
 correlated with the diagnosis. It is very easy to find that when the
@@ -613,7 +710,7 @@ deviance residuals and coefficients for the model being fitted.
       scale_y_continuous(trans = 'log2') + 
       labs(y = "log2(are_mean)")
 
-![](mini-project-1_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](mini-project-1_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 For research question 4, I find there are some collinearities between
 individual explanatory variables. For example, the above plot shows that
