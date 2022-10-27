@@ -16,10 +16,9 @@ time, we will first explore more in depth the concept of *tidy data.*
 Then, you’ll be sharpening some of the results you obtained from your
 previous milestone by:
 
--   Manipulating special data types in R: factors and/or dates and
-    times.
--   Fitting a model object to your data, and extract a result.
--   Reading and writing data as separate files.
+- Manipulating special data types in R: factors and/or dates and times.
+- Fitting a model object to your data, and extract a result.
+- Reading and writing data as separate files.
 
 **NOTE**: The main purpose of the mini data analysis is to integrate
 what you learn in class in an analysis. Although each milestone provides
@@ -56,33 +55,31 @@ your results in the context of a different research question.
 
 By the end of this milestone, you should:
 
--   Understand what *tidy* data is, and how to create it using `tidyr`.
--   Generate a reproducible and clear report using R Markdown.
--   Manipulating special data types in R: factors and/or dates and
-    times.
--   Fitting a model object to your data, and extract a result.
--   Reading and writing data as separate files.
+- Understand what *tidy* data is, and how to create it using `tidyr`.
+- Generate a reproducible and clear report using R Markdown.
+- Manipulating special data types in R: factors and/or dates and times.
+- Fitting a model object to your data, and extract a result.
+- Reading and writing data as separate files.
 
 # Setup
 
 Begin by loading your data and the tidyverse package below:
 
-    library(datateachr) # <- might contain the data you picked!
-    library(tidyverse)
+``` r
+library(datateachr) # <- might contain the data you picked!
+library(tidyverse)
+library(ggplot2)
+library(ggcorrplot)
+library(corrplot)
+library(forcats)
+library(broom)
+```
 
-    ## Warning: package 'readr' was built under R version 3.6.2
-
-    ## Warning: package 'purrr' was built under R version 3.6.2
-
-    library(ggplot2)
-    library(ggcorrplot)
-    library(corrplot)
-    library(forcats)
-    library(broom)
-
-    cancer_sample <- as_tibble(datateachr::cancer_sample)
-    cancer_sample$diagnosis <- as.factor(cancer_sample$diagnosis)
-    cancer_sample_subset <- cancer_sample[, 1:8]
+``` r
+cancer_sample <- as_tibble(datateachr::cancer_sample)
+cancer_sample$diagnosis <- as.factor(cancer_sample$diagnosis)
+cancer_sample_subset <- cancer_sample[, 1:8]
+```
 
 # Task 1: Tidy your data (15 points)
 
@@ -91,9 +88,9 @@ here is to understand how to do this reshaping with the `tidyr` package.
 
 A reminder of the definition of *tidy* data:
 
--   Each row is an **observation**
--   Each column is a **variable**
--   Each cell is a **value**
+- Each row is an **observation**
+- Each column is a **variable**
+- Each cell is a **value**
 
 *Tidy’ing* data is sometimes necessary because it can simplify
 computation. Other times it can be nice to organize data so that it can
@@ -102,12 +99,12 @@ be easier to understand when read manually.
 ### 2.1 (2.5 points)
 
 Based on the definition above, can you identify if your data is tidy or
-untidy? Go through all your columns, or if you have &gt;8 variables,
-just pick 8, and explain whether the data is untidy or tidy.
+untidy? Go through all your columns, or if you have \>8 variables, just
+pick 8, and explain whether the data is untidy or tidy.
 
 <!--------------------------- Start your work below --------------------------->
 
-I choose the cancer\_sample dataset, since there are more than 8
+I choose the cancer_sample dataset, since there are more than 8
 variables I pick the first eight variables as a subset to answer this
 question.
 
@@ -128,58 +125,62 @@ and “after”.
 
 <!--------------------------- Start your work below --------------------------->
 
-    # untidy data
-    cancer_sample_subset_untidy <- cancer_sample_subset %>% 
-                    pivot_wider(names_from = diagnosis,
-                                values_from = radius_mean)
-    print(cancer_sample_subset_untidy)
+``` r
+# untidy data
+cancer_sample_subset_untidy <- cancer_sample_subset %>% 
+                pivot_wider(names_from = diagnosis,
+                            values_from = radius_mean)
+print(cancer_sample_subset_untidy)
+```
 
     ## # A tibble: 569 × 8
-    ##          ID texture_mean perimeter_mean area_…¹ smoot…² compa…³     M     B
-    ##       <dbl>        <dbl>          <dbl>   <dbl>   <dbl>   <dbl> <dbl> <dbl>
-    ##  1   842302         10.4          123.    1001   0.118   0.278   18.0    NA
-    ##  2   842517         17.8          133.    1326   0.0847  0.0786  20.6    NA
-    ##  3 84300903         21.2          130     1203   0.110   0.160   19.7    NA
-    ##  4 84348301         20.4           77.6    386.  0.142   0.284   11.4    NA
-    ##  5 84358402         14.3          135.    1297   0.100   0.133   20.3    NA
-    ##  6   843786         15.7           82.6    477.  0.128   0.17    12.4    NA
-    ##  7   844359         20.0          120.    1040   0.0946  0.109   18.2    NA
-    ##  8 84458202         20.8           90.2    578.  0.119   0.164   13.7    NA
-    ##  9   844981         21.8           87.5    520.  0.127   0.193   13      NA
-    ## 10 84501001         24.0           84.0    476.  0.119   0.240   12.5    NA
-    ## # … with 559 more rows, and abbreviated variable names ¹​area_mean,
-    ## #   ²​smoothness_mean, ³​compactness_mean
+    ##          ID texture_mean perimeter_mean area_mean smoothne…¹ compa…²     M     B
+    ##       <dbl>        <dbl>          <dbl>     <dbl>      <dbl>   <dbl> <dbl> <dbl>
+    ##  1   842302         10.4          123.      1001      0.118   0.278   18.0    NA
+    ##  2   842517         17.8          133.      1326      0.0847  0.0786  20.6    NA
+    ##  3 84300903         21.2          130       1203      0.110   0.160   19.7    NA
+    ##  4 84348301         20.4           77.6      386.     0.142   0.284   11.4    NA
+    ##  5 84358402         14.3          135.      1297      0.100   0.133   20.3    NA
+    ##  6   843786         15.7           82.6      477.     0.128   0.17    12.4    NA
+    ##  7   844359         20.0          120.      1040      0.0946  0.109   18.2    NA
+    ##  8 84458202         20.8           90.2      578.     0.119   0.164   13.7    NA
+    ##  9   844981         21.8           87.5      520.     0.127   0.193   13      NA
+    ## 10 84501001         24.0           84.0      476.     0.119   0.240   12.5    NA
+    ## # … with 559 more rows, and abbreviated variable names ¹​smoothness_mean,
+    ## #   ²​compactness_mean
 
-    # Convert untidy back to tidy
-    cancer_sample_subset_tidy <- cancer_sample_subset_untidy %>% 
-                    pivot_longer(cols = c(M, B),
-                                names_to = "diagnosis", 
-                                values_to = "radius_mean",
-                                values_drop_na = TRUE) %>%
-                    select(ID, diagnosis, radius_mean, everything()) 
-    print(cancer_sample_subset_tidy)
+``` r
+# Convert untidy back to tidy
+cancer_sample_subset_tidy <- cancer_sample_subset_untidy %>% 
+                pivot_longer(cols = c(M, B),
+                            names_to = "diagnosis", 
+                            values_to = "radius_mean",
+                            values_drop_na = TRUE) %>%
+                select(ID, diagnosis, radius_mean, everything()) 
+print(cancer_sample_subset_tidy)
+```
 
     ## # A tibble: 569 × 8
-    ##          ID diagnosis radius_mean texture…¹ perim…² area_…³ smoot…⁴ compa…⁵
-    ##       <dbl> <chr>           <dbl>     <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-    ##  1   842302 M                18.0      10.4   123.    1001   0.118   0.278 
-    ##  2   842517 M                20.6      17.8   133.    1326   0.0847  0.0786
-    ##  3 84300903 M                19.7      21.2   130     1203   0.110   0.160 
-    ##  4 84348301 M                11.4      20.4    77.6    386.  0.142   0.284 
-    ##  5 84358402 M                20.3      14.3   135.    1297   0.100   0.133 
-    ##  6   843786 M                12.4      15.7    82.6    477.  0.128   0.17  
-    ##  7   844359 M                18.2      20.0   120.    1040   0.0946  0.109 
-    ##  8 84458202 M                13.7      20.8    90.2    578.  0.119   0.164 
-    ##  9   844981 M                13        21.8    87.5    520.  0.127   0.193 
-    ## 10 84501001 M                12.5      24.0    84.0    476.  0.119   0.240 
-    ## # … with 559 more rows, and abbreviated variable names ¹​texture_mean,
-    ## #   ²​perimeter_mean, ³​area_mean, ⁴​smoothness_mean, ⁵​compactness_mean
+    ##          ID diagnosis radius_mean texture_mean perimet…¹ area_…² smoot…³ compa…⁴
+    ##       <dbl> <chr>           <dbl>        <dbl>     <dbl>   <dbl>   <dbl>   <dbl>
+    ##  1   842302 M                18.0         10.4     123.    1001   0.118   0.278 
+    ##  2   842517 M                20.6         17.8     133.    1326   0.0847  0.0786
+    ##  3 84300903 M                19.7         21.2     130     1203   0.110   0.160 
+    ##  4 84348301 M                11.4         20.4      77.6    386.  0.142   0.284 
+    ##  5 84358402 M                20.3         14.3     135.    1297   0.100   0.133 
+    ##  6   843786 M                12.4         15.7      82.6    477.  0.128   0.17  
+    ##  7   844359 M                18.2         20.0     120.    1040   0.0946  0.109 
+    ##  8 84458202 M                13.7         20.8      90.2    578.  0.119   0.164 
+    ##  9   844981 M                13           21.8      87.5    520.  0.127   0.193 
+    ## 10 84501001 M                12.5         24.0      84.0    476.  0.119   0.240 
+    ## # … with 559 more rows, and abbreviated variable names ¹​perimeter_mean,
+    ## #   ²​area_mean, ³​smoothness_mean, ⁴​compactness_mean
 
-I first change the tidy data to untidy one using pivot\_wider() function
-and name it cancer\_sample\_subset\_untidy. The data become untidy
-because the last two columns are not variables, so it does not statisfy
-the requirement where each column must be a variable. Then I convert the
-untidy data back to tidy one using pivot\_longer() function, and reorder
+I first change the tidy data to untidy one using pivot_wider() function
+and name it cancer_sample_subset_untidy. The data become untidy because
+the last two columns are not variables, so it does not statisfy the
+requirement where each column must be a variable. Then I convert the
+untidy data back to tidy one using pivot_longer() function, and reorder
 the columns using select() and everything() to make it the same as the
 original data.
 
@@ -196,8 +197,8 @@ analysis in the next four tasks:
 
 1.  For malicious diagnosis, which feature has the highest average
     standard error and what is that largest value ?
-2.  How does the average area\_worst in benign cases compare with the
-    avarege area\_mean in malicious cases and what is their difference ?
+2.  How does the average area_worst in benign cases compare with the
+    avarege area_mean in malicious cases and what is their difference ?
 
 <!----------------------------------------------------------------------------->
 
@@ -214,10 +215,10 @@ question 1, I want to learn about which of the ten features (radius,
 texture, and etc.) tend to have the highest mean standard error in
 malicious tumors. This is important because then I know which feature in
 malicious dianosis has the highest variability. In my second question, I
-want to know how the average area\_worst in benign cases compare with
-average area\_mean in malicious cases, and their difference. I want to
-ensure that even the average area\_worst in benign tumors is smaller
-than the average area\_mean in the malicious tumors.
+want to know how the average area_worst in benign cases compare with
+average area_mean in malicious cases, and their difference. I want to
+ensure that even the average area_worst in benign tumors is smaller than
+the average area_mean in the malicious tumors.
 
 <!----------------------------------------------------------------------------->
 
@@ -228,28 +229,32 @@ dropping irrelevant columns, etc.).
 
 <!--------------------------- Start your work below --------------------------->
 
-    # Question 1, find the feature with higest average se
-    average_se_for_all_cols <- cancer_sample %>% 
-                    filter(diagnosis == "M") %>%
-                    select(ends_with("se")) %>%
-                    summarise_if(is.numeric, mean)
-    highest_se <- average_se_for_all_cols[which.max(average_se_for_all_cols)]
-    print(highest_se)
+``` r
+# Question 1, find the feature with higest average se
+average_se_for_all_cols <- cancer_sample %>% 
+                filter(diagnosis == "M") %>%
+                select(ends_with("se")) %>%
+                summarise_if(is.numeric, mean)
+highest_se <- average_se_for_all_cols[which.max(average_se_for_all_cols)]
+print(highest_se)
+```
 
     ## # A tibble: 1 × 1
     ##   area_se
     ##     <dbl>
     ## 1    72.7
 
-For question 1, we find that for malicious tumors, area\_se has the
+For question 1, we find that for malicious tumors, area_se has the
 highest standard error and the value is 72.67241.
 
-    # Question 2, find diff between average area_mean in malicious and average area_worst in benign
-    temp_subset_q2 <- (cancer_sample %>% 
-        group_by(diagnosis) %>%
-        summarise_all(.funs = c(mean="mean")) %>%
-        select(diagnosis, area_worst_mean, area_mean_mean)) 
-    print(temp_subset_q2)
+``` r
+# Question 2, find diff between average area_mean in malicious and average area_worst in benign
+temp_subset_q2 <- (cancer_sample %>% 
+    group_by(diagnosis) %>%
+    summarise_all(.funs = c(mean="mean")) %>%
+    select(diagnosis, area_worst_mean, area_mean_mean)) 
+print(temp_subset_q2)
+```
 
     ## # A tibble: 2 × 3
     ##   diagnosis area_worst_mean area_mean_mean
@@ -257,14 +262,16 @@ highest standard error and the value is 72.67241.
     ## 1 B                    559.           463.
     ## 2 M                   1422.           978.
 
-    area_diff <- temp_subset_q2[[2, 3]] - temp_subset_q2[[1, 2]]
-    print(area_diff)
+``` r
+area_diff <- temp_subset_q2[[2, 3]] - temp_subset_q2[[1, 2]]
+print(area_diff)
+```
 
     ## [1] 419.477
 
-We can see that the average area\_mean in malicious tumors is even
-larger than the average area\_worst in benign tumors, and the difference
-is 419.477.
+We can see that the average area_mean in malicious tumors is even larger
+than the average area_worst in benign tumors, and the difference is
+419.477.
 
 <!----------------------------------------------------------------------------->
 
@@ -282,18 +289,20 @@ Place the code for your plot below.
 
 <!-------------------------- Start your work below ---------------------------->
 
-    # Create a categorical variable with > 3 groups
-    radius_mean_level <- numeric()
-    radius_mean_level[cancer_sample$radius_mean < 11] <- "low"
-    radius_mean_level[cancer_sample$radius_mean >= 11 & cancer_sample$radius_mean < 13] <- "medium"
-    radius_mean_level[cancer_sample$radius_mean >= 13 & cancer_sample$radius_mean < 21] <- "high"
-    radius_mean_level[cancer_sample$radius_mean >= 21] <- "very high"
-    radius_mean_level <- as.factor(radius_mean_level)
+``` r
+# Create a categorical variable with > 3 groups
+radius_mean_level <- numeric()
+radius_mean_level[cancer_sample$radius_mean < 11] <- "low"
+radius_mean_level[cancer_sample$radius_mean >= 11 & cancer_sample$radius_mean < 13] <- "medium"
+radius_mean_level[cancer_sample$radius_mean >= 13 & cancer_sample$radius_mean < 21] <- "high"
+radius_mean_level[cancer_sample$radius_mean >= 21] <- "very high"
+radius_mean_level <- as.factor(radius_mean_level)
 
-    # use ggplot to plot
-    cancer_sample$radius_mean_level <- radius_mean_level
-    ggplot(cancer_sample, aes(x=radius_mean_level, ..count..)) + 
-        geom_bar(aes(fill=diagnosis)) + labs(x = "radius_mean_level")
+# use ggplot to plot
+cancer_sample$radius_mean_level <- radius_mean_level
+ggplot(cancer_sample, aes(x=radius_mean_level, ..count..)) + 
+    geom_bar(aes(fill=diagnosis)) + labs(x = "radius_mean_level")
+```
 
 ![](mini-project-2_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
@@ -322,11 +331,11 @@ Now, choose two of the following tasks.
         `tsibble` package to modify your original time-based column. (3
         points)
 
-        -   Note that you might first have to *make* a time-based column
-            using a function like `ymd()`, but this doesn’t count.
-        -   Examples of something you might do here: extract the day of
-            the year from a date, or extract the weekday, or let 24
-            hours elapse on your dates.
+        - Note that you might first have to *make* a time-based column
+          using a function like `ymd()`, but this doesn’t count.
+        - Examples of something you might do here: extract the day of
+          the year from a date, or extract the weekday, or let 24 hours
+          elapse on your dates.
 
     2.  Then, in a sentence or two, explain how your new column might be
         useful in exploring a research question. (1 point for
@@ -334,43 +343,47 @@ Now, choose two of the following tasks.
         point for your justification, which could be subtle or
         speculative).
 
-        -   For example, you could say something like “Investigating the
-            day of the week might be insightful because penguins don’t
-            work on weekends, and so may respond differently”.
+        - For example, you could say something like “Investigating the
+          day of the week might be insightful because penguins don’t
+          work on weekends, and so may respond differently”.
 
 <!-------------------------- Start your work below ---------------------------->
 
 **Task Number**: 1
 
-    ggplot(cancer_sample, aes(x=fct_reorder(radius_mean_level, radius_mean), ..count..)) +
-        geom_bar(aes(fill=diagnosis)) + labs(x = "radius_mean_level")
+``` r
+ggplot(cancer_sample, aes(x=fct_reorder(radius_mean_level, radius_mean), ..count..)) +
+    geom_bar(aes(fill=diagnosis)) + labs(x = "radius_mean_level")
+```
 
 ![](mini-project-2_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-In my original plot, the radius\_mean\_level is ordered by high, low,
+In my original plot, the radius_mean_level is ordered by high, low,
 medium, and very high, which is the alphabetical order of the first
 letter. However, this is not the order we want it to be. We want the
 order to be from low, medium, high to very high (i.e. based on the
-radius\_mean value from small to large). Therefore, we apply the
-fct\_reorder() function, which is going to reorder the
-radius\_mean\_level based on the values of radius\_mean in an ascending
-order After applying the function, we can see the radius\_mean\_level is
-reordered to become low, medium, high and very high, which is expected.
+radius_mean value from small to large). Therefore, we apply the
+fct_reorder() function, which is going to reorder the radius_mean_level
+based on the values of radius_mean in an ascending order After applying
+the function, we can see the radius_mean_level is reordered to become
+low, medium, high and very high, which is expected.
 
 <!----------------------------------------------------------------------------->
 <!-------------------------- Start your work below ---------------------------->
 
 **Task Number**: 2
 
-    ggplot(cancer_sample, aes(x=fct_collapse(radius_mean_level, high = c("high", "very high")), ..count..)) +
-        geom_bar(aes(fill=diagnosis)) + labs(x = "radius_mean_level")
+``` r
+ggplot(cancer_sample, aes(x=fct_collapse(radius_mean_level, high = c("high", "very high")), ..count..)) +
+    geom_bar(aes(fill=diagnosis)) + labs(x = "radius_mean_level")
+```
 
 ![](mini-project-2_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 From the orginal plot, we see there are only few observations in very
 high level. So we can merge high and very high levels into one single
-level called high. We can use fct\_collapse() function to collapse
-factor levels into manually defined groups.
+level called high. We can use fct_collapse() function to collapse factor
+levels into manually defined groups.
 
 <!----------------------------------------------------------------------------->
 
@@ -399,28 +412,30 @@ as a variable, and print its output to screen. We’ll omit having to
 justify your choice, because we don’t expect you to know about model
 specifics in STAT 545.
 
--   **Note**: It’s OK if you don’t know how these models/tests work.
-    Here are some examples of things you can do here, but the sky’s the
-    limit.
+- **Note**: It’s OK if you don’t know how these models/tests work. Here
+  are some examples of things you can do here, but the sky’s the limit.
 
-    -   You could fit a model that makes predictions on Y using another
-        variable, by using the `lm()` function.
-    -   You could test whether the mean of Y equals 0 using `t.test()`,
-        or maybe the mean across two groups are different using
-        `t.test()`, or maybe the mean across multiple groups are
-        different using `anova()` (you may have to pivot your data for
-        the latter two).
-    -   You could use `lm()` to test for significance of regression.
+  - You could fit a model that makes predictions on Y using another
+    variable, by using the `lm()` function.
+  - You could test whether the mean of Y equals 0 using `t.test()`, or
+    maybe the mean across two groups are different using `t.test()`, or
+    maybe the mean across multiple groups are different using `anova()`
+    (you may have to pivot your data for the latter two).
+  - You could use `lm()` to test for significance of regression.
 
 <!-------------------------- Start your work below ---------------------------->
 
-    model <- glm(diagnosis ~ .-ID-radius_mean_level, data = cancer_sample, family = binomial)
+``` r
+model <- glm(diagnosis ~ .-ID-radius_mean_level, data = cancer_sample, family = binomial)
+```
 
     ## Warning: glm.fit: algorithm did not converge
 
     ## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 
-    summary(model)
+``` r
+summary(model)
+```
 
     ## 
     ## Call:
@@ -482,20 +497,22 @@ specifics in STAT 545.
 Produce something relevant from your fitted model: either predictions on
 Y, or a single value like a regression coefficient or a p-value.
 
--   Be sure to indicate in writing what you chose to produce.
--   Your code should either output a tibble (in which case you should
-    indicate the column that contains the thing you’re looking for), or
-    the thing you’re looking for itself.
--   Obtain your results using the `broom` package if possible. If your
-    model is not compatible with the broom function you’re needing, then
-    you can obtain your results by some other means, but first indicate
-    which broom function is not compatible.
+- Be sure to indicate in writing what you chose to produce.
+- Your code should either output a tibble (in which case you should
+  indicate the column that contains the thing you’re looking for), or
+  the thing you’re looking for itself.
+- Obtain your results using the `broom` package if possible. If your
+  model is not compatible with the broom function you’re needing, then
+  you can obtain your results by some other means, but first indicate
+  which broom function is not compatible.
 
 <!-------------------------- Start your work below ---------------------------->
 
-    # obtain a tibble to summary the model output
-    tidy_model_summary <- tidy(model)
-    print(tidy_model_summary)
+``` r
+# obtain a tibble to summary the model output
+tidy_model_summary <- tidy(model)
+print(tidy_model_summary)
+```
 
     ## # A tibble: 31 × 5
     ##    term                   estimate std.error statistic   p.value
@@ -512,10 +529,12 @@ Y, or a single value like a regression coefficient or a p-value.
     ## 10 symmetry_mean         40485923.   777187.    52.1   0        
     ## # … with 21 more rows
 
-    pval_area_mean <- tidy_model_summary %>%
-                            filter(term == "area_mean") %>%
-                            select(p.value) 
-    print(pval_area_mean)
+``` r
+pval_area_mean <- tidy_model_summary %>%
+                        filter(term == "area_mean") %>%
+                        select(p.value) 
+print(pval_area_mean)
+```
 
     ## # A tibble: 1 × 1
     ##     p.value
@@ -523,9 +542,9 @@ Y, or a single value like a regression coefficient or a p-value.
     ## 1 3.70e-243
 
 I first use broom package tidy() function to convert the model into a
-tibble. Then I produce the p-value for the term area\_mean and store it
-into a new variable tibble called pval\_area\_mean, as above. The
-p-value for area\_mean is 3.697154e-243.
+tibble. Then I produce the p-value for the term area_mean and store it
+into a new variable tibble called pval_area_mean, as above. The p-value
+for area_mean is 3.697154e-243.
 
 <!----------------------------------------------------------------------------->
 
@@ -541,19 +560,21 @@ Take a summary table that you made from Milestone 1 (Task 4.2), and
 write it as a csv file in your `output` folder. Use the `here::here()`
 function.
 
--   **Robustness criteria**: You should be able to move your Mini
-    Project repository / project folder to some other location on your
-    computer, or move this very Rmd file to another location within your
-    project repository / folder, and your code should still work.
--   **Reproducibility criteria**: You should be able to delete the csv
-    file, and remake it simply by knitting this Rmd file.
+- **Robustness criteria**: You should be able to move your Mini Project
+  repository / project folder to some other location on your computer,
+  or move this very Rmd file to another location within your project
+  repository / folder, and your code should still work.
+- **Reproducibility criteria**: You should be able to delete the csv
+  file, and remake it simply by knitting this Rmd file.
 
 <!-------------------------- Start your work below ---------------------------->
 
-    # write table as dataframe to output folder
-    summary_table <- data.frame(summary(cancer_sample))
-    path_table <- paste(here::here(), "Output/table.csv",sep = "/")
-    write_csv(summary_table, path_table)
+``` r
+# write table as dataframe to output folder
+summary_table <- data.frame(summary(cancer_sample))
+path_table <- paste(here::here(), "Output/table.csv",sep = "/")
+write_csv(summary_table, path_table)
+```
 
 <!----------------------------------------------------------------------------->
 
@@ -563,17 +584,18 @@ Write your model object from Task 3 to an R binary file (an RDS), and
 load it again. Be sure to save the binary file in your `output` folder.
 Use the functions `saveRDS()` and `readRDS()`.
 
--   The same robustness and reproducibility criteria as in 3.1 apply
-    here.
+- The same robustness and reproducibility criteria as in 3.1 apply here.
 
 <!-------------------------- Start your work below ---------------------------->
 
-    path_model <- paste(here::here(), "Output/model.rds",sep = "/")
-    # save the model
-    saveRDS(model, path_model)
-    # load the model
-    model2 <- readRDS(path_model)
-    summary(model2)
+``` r
+path_model <- paste(here::here(), "Output/model.rds",sep = "/")
+# save the model
+saveRDS(model, path_model)
+# load the model
+model2 <- readRDS(path_model)
+summary(model2)
+```
 
     ## 
     ## Call:
@@ -643,13 +665,13 @@ repository on GitHub.
 
 Minimum contents of the README file:
 
--   In a sentence or two, explains what this repository is, so that
-    future-you or someone else stumbling on your repository can be
-    oriented to the repository.
--   In a sentence or two (or more??), briefly explains how to engage
-    with the repository. You can assume the person reading knows the
-    material from STAT 545A. Basically, if a visitor to your repository
-    wants to explore your project, what should they know?
+- In a sentence or two, explains what this repository is, so that
+  future-you or someone else stumbling on your repository can be
+  oriented to the repository.
+- In a sentence or two (or more??), briefly explains how to engage with
+  the repository. You can assume the person reading knows the material
+  from STAT 545A. Basically, if a visitor to your repository wants to
+  explore your project, what should they know?
 
 Once you get in the habit of making README files, and seeing more README
 files in other projects, you’ll wonder how you ever got by without them!
@@ -673,13 +695,13 @@ something like “This folder contains the source for Milestone 1”).
 
 All output is recent and relevant:
 
--   All Rmd files have been `knit`ted to their output, and all data
-    files saved from Task 4 above appear in the `output` folder.
--   All of these output files are up-to-date – that is, they haven’t
-    fallen behind after the source (Rmd) files have been updated.
--   There should be no relic output files. For example, if you were
-    knitting an Rmd to html, but then changed the output to be only a
-    markdown file, then the html file is a relic and should be deleted.
+- All Rmd files have been `knit`ted to their output, and all data files
+  saved from Task 4 above appear in the `output` folder.
+- All of these output files are up-to-date – that is, they haven’t
+  fallen behind after the source (Rmd) files have been updated.
+- There should be no relic output files. For example, if you were
+  knitting an Rmd to html, but then changed the output to be only a
+  markdown file, then the html file is a relic and should be deleted.
 
 Our recommendation: delete all output files, and re-knit each
 milestone’s Rmd file, so that everything is up to date and relevant.
